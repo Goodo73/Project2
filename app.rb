@@ -1,12 +1,21 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require 'httparty'
+# require 'httparty'
 require 'pry'
 
 require_relative 'config'
 require_relative 'book'
 
+after do
+  ActiveRecord::Base.connection.close
+end
+
 get '/' do
-	"ready to go"
-	# erb :index
+	@books = Book.all
+
+  erb :index
+end
+
+get '/about' do
+	erb :about
 end

@@ -1,0 +1,63 @@
+.container {
+	width: 83.333333%; /* 800 / 960 = 0.83333333 */
+	margin: 0 auto;
+}
+
+h1 {
+	text-align: center;
+}
+
+ul {
+	text-align: center;
+}
+
+li {
+	display: inline;
+}
+
+#book-list, #book-data {
+	width: 47.5%; /* 380 / 800 = 0.475 */
+}
+
+#book-list {
+	background-color: yellow;
+	float: left;
+}
+
+#book-data {
+	background-color: lime;
+	float: right;
+}
+
+table {
+	border-spacing: 20px;
+	margin: 0 auto;
+}
+
+th {
+	text-align: left;
+}
+
+
+/* Apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/*----------------------------------*/
+/* Clearfix for floats              */
+/*----------------------------------*/
+.cf:before,
+.cf:after {
+   content:"";
+   display:table;
+}
+.cf:after {
+   clear:both;
+}
+.cf {
+   zoom:1; /* For IE 6/7 (trigger hasLayout) */
+}
