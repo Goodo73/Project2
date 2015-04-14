@@ -15,12 +15,20 @@
 </div>
 <section id="filters">
 	<div>
-		<select name="filter-genre" id="filter-genre"></select>
-		<select name="filter-category" id="filter-category"></select>
+		<select name="filter-genre" id="filter-genre">
+			<option value="">Choose a genre</option>
+		</select>
+		<select name="filter-category" id="filter-category">
+			<option value="">Choose a category</option>
+		</select>
 	</div>
 	<div>
-		<select name="filter-format" id="filter-format"></select>
-		<select name="filter-loaned" id="filter-loaned"></select>
+		<select name="filter-format" id="filter-format">
+			<option value="">Choose a format</option>
+		</select>
+		<select name="filter-loaned" id="filter-loaned">
+			<option value="">Loan status</option>
+		</select>
 	</div>
 </section>
 
@@ -41,6 +49,46 @@
 				$('#book').append($tableRow);
 			}
 		});
+
+		// Load Genre selection list
+		var options = {
+			url: '/api/genres',
+			dataType: 'json'
+		};
+
+		$.ajax(options).done(function(genres) {
+			for (var i = 0; i < genres.length; i++) {
+				$option = $('<option>').html(genres[i].name);
+				$('#filter-genre').append($option);
+			}
+		});
+
+		// Load Format selection list
+		var options = {
+			url: '/api/formats',
+			dataType: 'json'
+		};
+
+		$.ajax(options).done(function(formats) {
+			for (var i = 0; i < formats.length; i++) {
+				$option = $('<option>').html(formats[i].name);
+				$('#filter-format').append($option);
+			}
+		});
+
+		// Load Category selection list
+		var options = {
+			url: '/api/categories',
+			dataType: 'json'
+		};
+
+		$.ajax(options).done(function(categories) {
+			for (var i = 0; i < categories.length; i++) {
+				$option = $('<option>').html(categories[i].name);
+				$('#filter-category').append($option);
+			}
+		});
+
 
 	});
 </script>
