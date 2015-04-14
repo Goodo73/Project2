@@ -1,20 +1,46 @@
 
 <div id="main" class="cf">
-	<section id="book-list">
-		<table>
+	<section id="books-list">
+		<table id="book">
 			<tr>
 				<th>Title</th>
-				<th>Author</th>
+				<th>Author(s)</th>
 			</tr>
-			<% @books.each do |book| %>
-			<tr>
-				<td><%= book.title %></td>
-				<td><%= book.author %></td>
-			</tr>
-			<% end %>
 		</table>
 	</section>
-	<section id="book-data">
-		<p>data data data</p>
+	<section id="books-data">
+		
+
 	</section>
 </div>
+<section id="filters">
+	<div>
+		<select name="filter-genre" id="filter-genre"></select>
+		<select name="filter-category" id="filter-category"></select>
+	</div>
+	<div>
+		<select name="filter-format" id="filter-format"></select>
+		<select name="filter-loaned" id="filter-loaned"></select>
+	</div>
+</section>
+
+<script>
+	$(document).ready(function(){
+// Load book list
+		var options = {
+			url: '/api/books',
+			dataType: 'json'
+		};
+
+		$.ajax(options).done(function(books) {
+			for (var i = 0; i < books.length; i++) {
+				$tableRow = $('<tr>');
+				$tableDataTitle = $('<td>').html(books[i].title);
+				$tableDataAuthor = $('<td>').html(books[i].author);
+				$tableRow.append($tableDataTitle).append($tableDataAuthor);
+				$('#book').append($tableRow);
+			}
+		});
+
+	});
+</script>
