@@ -15,18 +15,19 @@ li {
 	display: inline;
 }
 
-#books-list, #book-data {
+.newButton, #books-list, #books-data, select {
 	width: 47.5%; /* 380 / 800 = 0.475 */
 }
 
 #books-list {
-	background-color: yellow;
+	background-color: linen;
 	float: left;
 }
 
-#book-data {
+#books-data {
 	background-color: lime;
 	float: right;
+	text-align: center;
 }
 
 table {
@@ -36,6 +37,44 @@ table {
 
 th {
 	text-align: left;
+}
+
+#filterButton {
+	display: block;
+	margin: 0 auto;
+}
+
+#filters {
+	margin-top: 30px;
+}
+
+#filters .bottom, #filterButton {
+	margin-top: 20px;
+}
+
+#filter-genre, #filter-format {
+	float: left;
+}
+
+#filter-category, #filter-loan {
+	float: right;
+}
+
+h3 {
+	font-style: italic;
+}
+
+.fieldName {
+	font-weight: bold;
+}
+
+.newButton {
+	float: right;
+}
+
+.newBtn {
+	display: block;
+	margin: 0 auto;
 }
 
 

@@ -6,88 +6,189 @@
 				<th>Title</th>
 				<th>Author(s)</th>
 			</tr>
+			<% @books.each do |book| %>
+			<tr>
+				<td class="title" data-book-id="<%= book.id %>"><%= book.title %></td>
+				<td><%= book.author %></td>
+			</tr>
+			<% end %>
 		</table>
+		<form action="" id="filters">
+			<div class="top cf">
+				<select name="filter-genre" id="filter-genre">
+					<option value="none" disabled selected>Choose a genre</option>
+					<% @genres.each do |genre| %>
+						<option value=""><%= genre.name %></option>
+					<% end %>
+				</select>
+				<select name="filter-category" id="filter-category">
+					<option value="none" disabled selected>Choose a category</option>
+					<% @categories.each do |category| %>
+						<option value=""><%= category.name %></option>
+					<% end %>
+				</select>
+			</div>
+			<div class="bottom cf">
+				<select name="filter-format" id="filter-format">
+					<option value="none" disabled selected>Choose a format</option>
+					<% @formats.each do |format| %>
+						<option value=""><%= format.name %></option>
+					<% end %>
+				</select>
+				<select name="filter-loan" id="filter-loan">
+					<option value="none" disabled selected>Choose a loan status</option>
+					<option value="1">Loaned</option>
+					<option value="0">Not loaned</option>
+				</select>
+			</div>
+			<button id="filterButton">Filter</button>
+		</form>
 	</section>
 	<section id="books-data">
-		
-
+	<!-- Will be populated with data about an individual book -->
 	</section>
 </div>
-<section id="filters">
-	<div>
-		<select name="filter-genre" id="filter-genre">
-			<option value="">Choose a genre</option>
-		</select>
-		<select name="filter-category" id="filter-category">
-			<option value="">Choose a category</option>
-		</select>
-	</div>
-	<div>
-		<select name="filter-format" id="filter-format">
-			<option value="">Choose a format</option>
-		</select>
-		<select name="filter-loaned" id="filter-loaned">
-			<option value="">Loan status</option>
-		</select>
-	</div>
-</section>
+<div class="newButton">
+	<button class="newBtn">New book</button>
+</div>
+
 
 <script>
 	$(document).ready(function(){
-// Load book list
-		var options = {
-			url: '/api/books',
-			dataType: 'json'
-		};
+		$('#book').on('click', 'td.title', function(){
+			$('#books-data').empty();
 
-		$.ajax(options).done(function(books) {
-			for (var i = 0; i < books.length; i++) {
-				$tableRow = $('<tr>');
-				$tableDataTitle = $('<td>').html(books[i].title);
-				$tableDataAuthor = $('<td>').html(books[i].author);
-				$tableRow.append($tableDataTitle).append($tableDataAuthor);
-				$('#book').append($tableRow);
-			}
-		});
+			var $bookId = $(this).data('book-id');
+
+			var apiBook = {
+				url: '/api/books/' + $bookId,
+				dataType: 'json'
+			};
+			$.ajax(apiBook).done(function(book) {
+				$h2 = $('<h2>').html(book.title);
+				$h3 = $('<h3>').html(book.author);
+
+				$span1 = $("<span class='fieldName'>").html("Genre: ");
+				$span2 = $('<span>').html(book.genre.name);
+				$para = $('<p>').append($span1).append($span2);
+
+				$('#books-data').append($h2).append($h3).append($para);
+
+				$span1 = $("<span class='fieldName'>").html("Category: ");
+				$span2 = $('<span>').html(book.category.name);
+				$para = $('<p>').append($span1).append($span2);
+
+				$('#books-data').append($para);
+
+				$span1 = $("<span class='fieldName'>").html("Format: ");
+				$span2 = $('<span>').html(book.format.name);
+				$para = $('<p>').append($span1).append($span2);
+
+				$('#books-data').append($para);
+
+				$span1 = $("<span class='fieldName'>").html("Loaned to: ");
+				if (book.loaned_to === "") {
+					$span2 = $('<span>').html("No one");
+				} else {
+					$span2 = $('<span>').html(book.loaned_to);
+				}
+
+				$para = $('<p>').append($span1).append($span2);
+
+				$('#books-data').append($para);
+
+				$editBtn = $('<button>').html("Edit");
+				$editBtn.attr('class', 'editBtn')
+				$editBtn.attr('data-book-id', $bookId)
+				$delBtn = $('<button>').html("Delete");
+				$delBtn.attr('class', 'delBtn')
+				$delBtn.attr('data-book-id', $bookId)
+
+				$('#books-data').append($editBtn).append($delBtn);
+			})
+		})
+
+		$(document).on('click', '.delBtn', function(){
+		// Adds the click event to a dynamically created element (in this case, the Delete button)
+
+			var $bookId = $(this).data('book-id');
+
+			var deleteBook = {
+				url: '/books/' + $bookId + '/delete',
+				method: 'delete',
+			};
+			$.ajax(deleteBook).done(function(book) {
+				$('#books-data').empty();
+
+				// Load book list
+				var apiBooks = {
+					url: '/api/books',
+					dataType: 'json'
+				};
+
+				$.ajax(apiBooks).done(function(books) {
+					$('#book').empty();
+					$tableRow = $('<tr>');
+					$tableHeadingTitle = $('<th>').html("Title");
+					$tableHeadingAuthor = $('<th>').html("Author(s)");
+					$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
+
+					$('#book').append($tableRow);
+
+					for (var i = 0; i < books.length; i++) {
+						$tableRow = $('<tr>');
+						$tableDataTitle = $('<td>').html(books[i].title);
+						$tableDataTitle.attr('class', 'title');
+						$tableDataTitle.attr('data-book-id', books[i].id);
+						$tableDataAuthor = $('<td>').html(books[i].author);
+						$tableRow.append($tableDataTitle).append($tableDataAuthor);
+
+						$('#book').append($tableRow);
+					}
+				});
+			});
+			
+		})
+
 
 		// Load Genre selection list
-		var options = {
-			url: '/api/genres',
-			dataType: 'json'
-		};
+		// var options = {
+		// 	url: '/api/genres',
+		// 	dataType: 'json'
+		// };
 
-		$.ajax(options).done(function(genres) {
-			for (var i = 0; i < genres.length; i++) {
-				$option = $('<option>').html(genres[i].name);
-				$('#filter-genre').append($option);
-			}
-		});
+		// $.ajax(options).done(function(genres) {
+		// 	for (var i = 0; i < genres.length; i++) {
+		// 		$option = $('<option>').html(genres[i].name);
+		// 		$('#filter-genre').append($option);
+		// 	}
+		// });
 
 		// Load Format selection list
-		var options = {
-			url: '/api/formats',
-			dataType: 'json'
-		};
+		// var options = {
+		// 	url: '/api/formats',
+		// 	dataType: 'json'
+		// };
 
-		$.ajax(options).done(function(formats) {
-			for (var i = 0; i < formats.length; i++) {
-				$option = $('<option>').html(formats[i].name);
-				$('#filter-format').append($option);
-			}
-		});
+		// $.ajax(options).done(function(formats) {
+		// 	for (var i = 0; i < formats.length; i++) {
+		// 		$option = $('<option>').html(formats[i].name);
+		// 		$('#filter-format').append($option);
+		// 	}
+		// });
 
 		// Load Category selection list
-		var options = {
-			url: '/api/categories',
-			dataType: 'json'
-		};
+		// var options = {
+		// 	url: '/api/categories',
+		// 	dataType: 'json'
+		// };
 
-		$.ajax(options).done(function(categories) {
-			for (var i = 0; i < categories.length; i++) {
-				$option = $('<option>').html(categories[i].name);
-				$('#filter-category').append($option);
-			}
-		});
+		// $.ajax(options).done(function(categories) {
+		// 	for (var i = 0; i < categories.length; i++) {
+		// 		$option = $('<option>').html(categories[i].name);
+		// 		$('#filter-category').append($option);
+		// 	}
+		// });
 
 
 	});
