@@ -65,46 +65,7 @@
 				dataType: 'json'
 			};
 			$.ajax(apiBook).done(function(book) {
-				$h2 = $('<h2>').html(book.title);
-				$h3 = $('<h3>').html(book.author);
-
-				$span1 = $("<span class='fieldName'>").html("Genre: ");
-				$span2 = $('<span>').html(book.genre.name);
-				$para = $('<p>').append($span1).append($span2);
-
-				$('#books-data').append($h2).append($h3).append($para);
-
-				$span1 = $("<span class='fieldName'>").html("Category: ");
-				$span2 = $('<span>').html(book.category.name);
-				$para = $('<p>').append($span1).append($span2);
-
-				$('#books-data').append($para);
-
-				$span1 = $("<span class='fieldName'>").html("Format: ");
-				$span2 = $('<span>').html(book.format.name);
-				$para = $('<p>').append($span1).append($span2);
-
-				$('#books-data').append($para);
-
-				$span1 = $("<span class='fieldName'>").html("Loaned to: ");
-				if (book.loaned_to === "") {
-					$span2 = $('<span>').html("No one");
-				} else {
-					$span2 = $('<span>').html(book.loaned_to);
-				}
-
-				$para = $('<p>').append($span1).append($span2);
-
-				$('#books-data').append($para);
-
-				$editBtn = $('<button>').html("Edit");
-				$editBtn.attr('class', 'editBtn')
-				$editBtn.attr('data-book-id', $bookId)
-				$delBtn = $('<button>').html("Delete");
-				$delBtn.attr('class', 'delBtn')
-				$delBtn.attr('data-book-id', $bookId)
-
-				$('#books-data').append($editBtn).append($delBtn);
+				displayBook(book,$bookId);
 			})
 		})
 
@@ -125,31 +86,76 @@
 					url: '/api/books',
 					dataType: 'json'
 				};
-
 				$.ajax(apiBooks).done(function(books) {
-					$('#book').empty();
-					$tableRow = $('<tr>');
-					$tableHeadingTitle = $('<th>').html("Title");
-					$tableHeadingAuthor = $('<th>').html("Author(s)");
-					$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
-
-					$('#book').append($tableRow);
-
-					for (var i = 0; i < books.length; i++) {
-						$tableRow = $('<tr>');
-						$tableDataTitle = $('<td>').html(books[i].title);
-						$tableDataTitle.attr('class', 'title');
-						$tableDataTitle.attr('data-book-id', books[i].id);
-						$tableDataAuthor = $('<td>').html(books[i].author);
-						$tableRow.append($tableDataTitle).append($tableDataAuthor);
-
-						$('#book').append($tableRow);
-					}
-				});
-			});
-			
+					loadBooks(books)
+				})
+			})
 		})
 
+		function displayBook(book,bookID) {
+			var $h2 = $('<h2>').html(book.title);
+			var $h3 = $('<h3>').html(book.author);
+
+			var $span1 = $("<span class='fieldName'>").html("Genre: ");
+			var $span2 = $('<span>').html(book.genre.name);
+			var $para = $('<p>').append($span1).append($span2);
+
+			$('#books-data').append($h2).append($h3).append($para);
+
+			$span1 = $("<span class='fieldName'>").html("Category: ");
+			$span2 = $('<span>').html(book.category.name);
+			$para = $('<p>').append($span1).append($span2);
+
+			$('#books-data').append($para);
+
+			$span1 = $("<span class='fieldName'>").html("Format: ");
+			$span2 = $('<span>').html(book.format.name);
+			$para = $('<p>').append($span1).append($span2);
+
+			$('#books-data').append($para);
+
+			$span1 = $("<span class='fieldName'>").html("Loaned to: ");
+			if (book.loaned_to === "") {
+				$span2 = $('<span>').html("No one");
+			} else {
+				$span2 = $('<span>').html(book.loaned_to);
+			}
+
+			$para = $('<p>').append($span1).append($span2);
+
+			$('#books-data').append($para);
+
+			var $editBtn = $('<button>').html("Edit");
+			$editBtn.attr('class', 'editBtn')
+			$editBtn.attr('data-book-id', bookID)
+			var $delBtn = $('<button>').html("Delete");
+			$delBtn.attr('class', 'delBtn')
+			$delBtn.attr('data-book-id', bookID)
+
+			$('#books-data').append($editBtn).append($delBtn);
+		}
+
+		function loadBooks(books) {
+			$('#book').empty();
+			
+			var $tableRow = $('<tr>');
+			var $tableHeadingTitle = $('<th>').html("Title");
+			var $tableHeadingAuthor = $('<th>').html("Author(s)");
+			$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
+
+			$('#book').append($tableRow);
+
+			for (var i = 0; i < books.length; i++) {
+				$tableRow = $('<tr>');
+				var $tableDataTitle = $('<td>').html(books[i].title);
+				$tableDataTitle.attr('class', 'title');
+				$tableDataTitle.attr('data-book-id', books[i].id);
+				var $tableDataAuthor = $('<td>').html(books[i].author);
+				$tableRow.append($tableDataTitle).append($tableDataAuthor);
+
+				$('#book').append($tableRow);
+			}
+		}
 
 		// Load Genre selection list
 		// var options = {
