@@ -1,14 +1,21 @@
+body {
+	background-color: black;
+	font-family: 'Glegoo', serif;
+	background-image: url('/images/library.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	color: white;
+}
+
 .container {
 	width: 85%;
 	margin: 0 auto;
 }
 
-header {
-	margin-bottom: 30px;
-}
-
 h1 {
 	text-align: center;
+	font-size: 3em;
+	margin: .35em 0;
 }
 
 nav ul {
@@ -17,11 +24,22 @@ nav ul {
 
 nav li {
 	display: inline;
+	padding-right: 10px;
+}
+
+nav li:last-child {
+	padding-right: 0;
+}
+
+#books-list, #book-data {
+	width: 47.5%;
 }
 
 #books-list ul {
 	list-style: none;
 	padding-left: 0;
+	height: 300px;
+	overflow: scroll;
 }
 
 #books-list li {
@@ -29,27 +47,31 @@ nav li {
 	margin-top: 10px;
 }
 
-#books-list, #book-data {
-	width: 47.5%;
+a {
+	text-decoration: none;
+	color: white;
+}
+
+a:hover {
+	color: yellow;
 }
 
 select {
 	width: 40%;
+	background-color: black;
 }
 
 input {
 	width: 50%;
+	color: black;
 }
 
 #books-list {
-	/*background-color: linen;*/
 	float: left;
 }
 
 #book-data {
-	/*background-color: lime;*/
 	float: right;
-	/*text-align: center;*/
 }
 
 #book-form, #book-display {
@@ -63,7 +85,6 @@ input {
 
 #filters {
 	margin-top: 20px;
-	/*background-color: red;*/
 }
 
 #filters .bottom, #filterBtn {
@@ -86,31 +107,22 @@ input {
 	font-style: italic;
 }
 
-.fieldName {
-	font-weight: bold;
+button { 
+	padding: 5px 10px;
+	background-color: black;
 }
 
-.newButton {
-	margin-top: 30px;
+button:hover {
+	background-color: #84B0D2;
 }
 
-.newBtn { 
-	float: right;
-	padding: 10px 10px;
-}
-
-.newBtn, .saveBtn, .editBtn, .delBtn, #filterBtn { 
-	padding: 10px 10px;
-}
-
-.saveBtn, .newBtn {
+.saveBtn {
 	display: block;
 	margin: 0 auto;
 }
 
 #displayButtons {
 	text-align: center;
-	/*background-color: blue;	*/
 }
 
 

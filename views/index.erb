@@ -1,4 +1,9 @@
 <div id="main" class="cf">
+
+	<div class="addButton">
+		<button class="addBtn">Add book</button>
+	</div>
+
 	<section id="books-list">
 		<ul>
 			<% @books.each do |book| %>
@@ -59,7 +64,7 @@
 				<button class="delBtn">Delete</button>
 			</p>
 		</div>
-		<form id="book-form" action="/books/new" method="post">
+		<form id="book-form" action="/books/add" method="post">
 			<p>
 				<label for="title"><strong>Title:</strong></label>
 				<input type="text" name="title" id="form-title">
@@ -102,8 +107,4 @@
 			<button class="saveBtn">Save</button>
 		</form>
 	</section>
-</div>
-
-<div class="newButton">
-	<button class="newBtn">New book</button>
 </div>

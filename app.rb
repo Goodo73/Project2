@@ -78,7 +78,7 @@ put '/books/:id' do
 end
 
 # Insert a new book
-post '/books/new' do
+post '/books/add' do
 	book = Book.new
 	book.title = params[:title]
 	book.author = params[:author]

@@ -13,7 +13,7 @@ $(document).ready(function(){
 	})
 
 	// New button clicked while editing book details
-	$('.newBtn').on('click',function(){
+	$('.addBtn').on('click',function(){
 		// Clear input fields
 		$('#form-title').val('');
 		$('#form-author').val('');
@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 		if ($bookId === '0') {
 		// Saving a new entry
-			var saveUrl = '/books/new';
+			var saveUrl = '/books/add';
 			var saveMethod = 'post';
 		} else {
 		// Saving an existing entry
