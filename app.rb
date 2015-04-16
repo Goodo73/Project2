@@ -15,7 +15,7 @@ after do
 end
 
 get '/' do
-	@books = Book.all
+	@books = Book.all.order('title')
 	@genres = Genre.all
 	@formats = Format.all
 	@categories = Category.all
@@ -23,45 +23,64 @@ get '/' do
   erb :index
 end
 
+# Retrieve all books, ordered by title
 get '/api/books' do
-	books = Book.all
+	books = Book.all.order('title')
 	content_type :json
-	books.to_json
+	books.to_json(:include => [:genre, :format, :category])
 end
 
+# Retrieve specific book by id
 get '/api/books/:id' do
 	book = Book.find(params[:id])
 	content_type :json
 	book.to_json(:include => [:genre, :format, :category])
-
-	# binding.pry
 end
 
+# Retrieve all genres, ordered by name
 get '/api/genres' do
-	genres = Genre.all
+	genres = Genre.all.order('name')
 	content_type :json
 	genres.to_json
 end
 
-get '/api/formats' do
-	formats = Format.all
-	content_type :json
-	formats.to_json
-end
-
+# Retrieve all categories, ordered by name
 get '/api/categories' do
-	categories = Category.all
+	categories = Category.all.order('name')
 	content_type :json
 	categories.to_json
 end
 
-delete '/books/:id/delete' do
-	Book.find(params[:id]).delete
-
-	redirect to '/'
+# Retrieve all formats, ordered by name
+get '/api/formats' do
+	formats = Format.all.order('name')
+	content_type :json
+	formats.to_json
 end
 
-post '/api/books' do
+# Delete a specific book
+delete '/books/:id/delete' do
+	Book.find(params[:id]).delete
+end
+
+put '/books/:id' do
+	# find book by id
+	book = Book.find(params[:id])
+	# set column values (how to set IDs of foreign tables)
+	book.title = params[:title]
+	book.author = params[:author]
+	book.genre_id = Genre.find_by(name: params[:genre]).id
+	book.category_id = Category.find_by(name: params[:category]).id
+	book.format_id = Format.find_by(name: params[:format]).id
+	book.loaned_to = params[:loan]
+	# binding.pry
+	# save book
+	book.save
+	content_type :json
+	book.to_json(:include => [:genre, :format, :category])
+end
+
+post '/books/new' do
 	book = Book.new
 	book.title = # params[:title]
 	book.author = #

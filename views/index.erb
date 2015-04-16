@@ -1,14 +1,14 @@
 
 <div id="main" class="cf">
 	<section id="books-list">
-		<table id="book">
+		<table id="books">
 			<tr>
 				<th>Title</th>
 				<th>Author(s)</th>
 			</tr>
 			<% @books.each do |book| %>
 			<tr>
-				<td class="title" data-book-id="<%= book.id %>"><%= book.title %></td>
+				<td class="list-title" data-book-id="<%= book.id %>"><%= book.title %></td>
 				<td><%= book.author %></td>
 			</tr>
 			<% end %>
@@ -44,8 +44,66 @@
 			<button id="filterButton">Filter</button>
 		</form>
 	</section>
-	<section id="books-data">
-	<!-- Will be populated with data about an individual book -->
+	<section id="book-data">
+		<div id="book-display">
+			<h2></h2>
+			<h3></h3>
+			<p>
+				<strong>Genre:</strong> <span id="genre"></span>
+			</p>
+			<p>
+				<strong>Category:</strong> <span id="category"></span>
+			</p>
+			<p>
+				<strong>Format:</strong> <span id="format"></span>
+			</p>
+			<p>
+				<strong>Loaned to:</strong> <span id="loaned_to"></span>
+			</p>
+			<button class="editBtn">Edit</button>
+			<button class="delBtn">Delete</button>
+		</div>
+		<form id="book-form" action="/books/new" method="post">
+			<p>
+				<label for="title"><strong>Title:</strong></label>
+				<input type="text" name="title" id="form-title">
+			</p>
+			<p>
+				<label for="author"><strong>Author:</strong></label>
+				<input type="text" name="author" id="form-author">
+			</p>
+			<p>
+				<label for="form-genre"><strong>Genre:</strong></label>
+				<select name="form-genre" id="form-genre">
+					<% @genres.each do |genre| %>
+						<option><%= genre.name %></option>
+					<% end %>
+				</select>
+			</p>
+			<p>
+				<label for="form-category"><strong>Category:</strong></label>
+				<select name="form-category" id="form-category">
+					<% @categories.each do |category| %>
+						<option><%= category.name %></option>
+					<% end %>
+				</select>
+			</p>
+			<p>
+				<label for="form-format"><strong>Format:</strong></label>
+				<select name="form-format" id="form-format">
+					<% @formats.each do |format| %>
+						<option><%= format.name %></option>
+					<% end %>
+				</select>
+			</p>
+			<p>
+				<label for="loaned_to"><strong>Loaned to:</strong></label>
+				<input type="text" name="loaned_to" id="form-loaned_to">
+			</p>
+			<p>
+				<button class="saveBtn">Save</button>
+			</p>
+		</form>
 	</section>
 </div>
 <div class="newButton">
@@ -55,9 +113,7 @@
 
 <script>
 	$(document).ready(function(){
-		$('#book').on('click', 'td.title', function(){
-			$('#books-data').empty();
-
+		$('#books').on('click', 'td.list-title', function(){
 			var $bookId = $(this).data('book-id');
 
 			var apiBook = {
@@ -69,9 +125,57 @@
 			})
 		})
 
-		$(document).on('click', '.delBtn', function(){
-		// Adds the click event to a dynamically created element (in this case, the Delete button)
+		// Edit button clicked while viewing book details
+		$('.editBtn').on('click', function(){
+			var $bookId = $(this).data('book-id');
+			var apiBook = {
+				url: '/api/books/' + $bookId,
+				dataType: 'json'
+			};
+			$.ajax(apiBook).done(function(book) {
+				$('#form-title').val(book.title);
+				$('#form-author').val(book.author);
+				$('#form-genre').val(book.genre.name);
+				$('#form-category').val(book.category.name);
+				$('#form-format').val(book.format.name);
+				$('#form-loaned_to').val(book.loaned_to);
 
+				$('#book-display').hide();
+				$('#book-form').show();
+			})
+		})
+
+		$('.saveBtn').on('click', function(e){
+			e.preventDefault();
+			var $bookId = $(this).data('book-id');
+			var saveBook = {
+				url: '/books/' + $bookId,
+				method: 'put',
+				data: {
+					title: $('#form-title').val(),
+					author: $('#form-author').val(),
+					genre: $('#form-genre').val(),
+					category: $('#form-category').val(),
+					format: $('#form-format').val(),
+					loan: $('#form-loaned_to').val()
+				}
+			};
+			$.ajax(saveBook).done(function(book) {
+				displayBook(book,$bookId);
+
+				// Load book list
+				var apiBooks = {
+					url: '/api/books',
+					dataType: 'json'
+				};
+				$.ajax(apiBooks).done(function(books) {
+					loadBooks(books)
+				})
+			})
+		})
+
+		// Delete button clicked while viewing book details
+		$('.delBtn').on('click', function(){
 			var $bookId = $(this).data('book-id');
 
 			var deleteBook = {
@@ -79,7 +183,8 @@
 				method: 'delete',
 			};
 			$.ajax(deleteBook).done(function(book) {
-				$('#books-data').empty();
+				$('#book-form').hide();
+				$('#book-display').hide();
 
 				// Load book list
 				var apiBooks = {
@@ -93,57 +198,29 @@
 		})
 
 		function displayBook(book,bookID) {
-			var $h2 = $('<h2>').html(book.title);
-			var $h3 = $('<h3>').html(book.author);
+			$('#book-display h2').html(book.title);
+			$('#book-display h3').html(book.author);
+			$('#book-display #genre').html(book.genre.name);
+			$('#book-display #category').html(book.category.name);
+			$('#book-display #format').html(book.format.name);
+			$('#book-display #loaned_to').html(book.loaned_to);
+			$('.editBtn').data('book-id', bookID);
+			$('.delBtn').data('book-id', bookID);
+			$('.saveBtn').data('book-id', bookID);
 
-			var $span1 = $("<span class='fieldName'>").html("Genre: ");
-			var $span2 = $('<span>').html(book.genre.name);
-			var $para = $('<p>').append($span1).append($span2);
-
-			$('#books-data').append($h2).append($h3).append($para);
-
-			$span1 = $("<span class='fieldName'>").html("Category: ");
-			$span2 = $('<span>').html(book.category.name);
-			$para = $('<p>').append($span1).append($span2);
-
-			$('#books-data').append($para);
-
-			$span1 = $("<span class='fieldName'>").html("Format: ");
-			$span2 = $('<span>').html(book.format.name);
-			$para = $('<p>').append($span1).append($span2);
-
-			$('#books-data').append($para);
-
-			$span1 = $("<span class='fieldName'>").html("Loaned to: ");
-			if (book.loaned_to === "") {
-				$span2 = $('<span>').html("No one");
-			} else {
-				$span2 = $('<span>').html(book.loaned_to);
-			}
-
-			$para = $('<p>').append($span1).append($span2);
-
-			$('#books-data').append($para);
-
-			var $editBtn = $('<button>').html("Edit");
-			$editBtn.attr('class', 'editBtn')
-			$editBtn.attr('data-book-id', bookID)
-			var $delBtn = $('<button>').html("Delete");
-			$delBtn.attr('class', 'delBtn')
-			$delBtn.attr('data-book-id', bookID)
-
-			$('#books-data').append($editBtn).append($delBtn);
+			$('#book-form').hide();
+			$('#book-display').show();
 		}
 
 		function loadBooks(books) {
-			$('#book').empty();
+			$('#books').empty();
 			
 			var $tableRow = $('<tr>');
 			var $tableHeadingTitle = $('<th>').html("Title");
 			var $tableHeadingAuthor = $('<th>').html("Author(s)");
 			$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
 
-			$('#book').append($tableRow);
+			$('#books').append($tableRow);
 
 			for (var i = 0; i < books.length; i++) {
 				$tableRow = $('<tr>');
@@ -153,49 +230,9 @@
 				var $tableDataAuthor = $('<td>').html(books[i].author);
 				$tableRow.append($tableDataTitle).append($tableDataAuthor);
 
-				$('#book').append($tableRow);
+				$('#books').append($tableRow);
 			}
 		}
-
-		// Load Genre selection list
-		// var options = {
-		// 	url: '/api/genres',
-		// 	dataType: 'json'
-		// };
-
-		// $.ajax(options).done(function(genres) {
-		// 	for (var i = 0; i < genres.length; i++) {
-		// 		$option = $('<option>').html(genres[i].name);
-		// 		$('#filter-genre').append($option);
-		// 	}
-		// });
-
-		// Load Format selection list
-		// var options = {
-		// 	url: '/api/formats',
-		// 	dataType: 'json'
-		// };
-
-		// $.ajax(options).done(function(formats) {
-		// 	for (var i = 0; i < formats.length; i++) {
-		// 		$option = $('<option>').html(formats[i].name);
-		// 		$('#filter-format').append($option);
-		// 	}
-		// });
-
-		// Load Category selection list
-		// var options = {
-		// 	url: '/api/categories',
-		// 	dataType: 'json'
-		// };
-
-		// $.ajax(options).done(function(categories) {
-		// 	for (var i = 0; i < categories.length; i++) {
-		// 		$option = $('<option>').html(categories[i].name);
-		// 		$('#filter-category').append($option);
-		// 	}
-		// });
-
 
 	});
 </script>

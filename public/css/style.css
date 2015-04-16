@@ -15,8 +15,12 @@ li {
 	display: inline;
 }
 
-.newButton, #books-list, #books-data, select {
+.newButton, #books-list, #book-data, select {
 	width: 47.5%; /* 380 / 800 = 0.475 */
+}
+
+.list-title {
+	cursor: pointer;
 }
 
 #books-list {
@@ -24,10 +28,14 @@ li {
 	float: left;
 }
 
-#books-data {
+#book-data {
 	background-color: lime;
 	float: right;
 	text-align: center;
+}
+
+#book-form, #book-display {
+	display: none;
 }
 
 table {
