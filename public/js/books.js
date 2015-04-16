@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	// Book title clicked in book listing
-	$('#books').on('click', 'td.list-title', function(){
+	$('#books-list').on('click', 'li', function(){
 		var $bookId = $(this).data('book-id');
 
 		var apiBook = {
@@ -132,25 +132,12 @@ $(document).ready(function(){
 
 	// Display a list of books 
 	function displayBooks(books) {
-		$('#books').empty();
+		$('#books-list ul').empty();
 		
-		var $tableRow = $('<tr>');
-		var $tableHeadingTitle = $('<th>').html("Title");
-		var $tableHeadingAuthor = $('<th>').html("Author(s)");
-		$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
-
-		$('#books').append($tableRow);
-
 		for (var i = 0; i < books.length; i++) {
-			$tableRow = $('<tr>');
-			var $tableDataTitle = $('<td>').html(books[i].title);
-			$tableDataTitle.attr('class', 'list-title');
-			$tableDataTitle.attr('data-book-id', books[i].id);
-			var $tableDataAuthor = $('<td>').html(books[i].author);
-			$tableRow.append($tableDataTitle).append($tableDataAuthor);
-
-			$('#books').append($tableRow);
+			var $listItem = $('<li>').html("<strong>" + books[i].title + "</strong> by " + books[i].author);
+			$listItem.attr('data-book-id', books[i].id);
+			$('#books-list ul').append($listItem);
 		}
 	}
-
 });

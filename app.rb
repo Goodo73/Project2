@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/reloader'
-# require 'httparty'
 require 'pry'
 
 require_relative 'config'
@@ -8,7 +7,6 @@ require_relative 'book'
 require_relative 'genre'
 require_relative 'format'
 require_relative 'category'
-
 
 after do
   ActiveRecord::Base.connection.close
@@ -58,28 +56,28 @@ get '/api/formats' do
 	formats.to_json
 end
 
-# Delete a specific book
+# Delete a specific book by id
 delete '/books/:id/delete' do
 	Book.find(params[:id]).delete
 end
 
+# Update a specific book by id
 put '/books/:id' do
-	# find book by id
 	book = Book.find(params[:id])
-	# set column values (how to set IDs of foreign tables)
+
 	book.title = params[:title]
 	book.author = params[:author]
 	book.genre_id = Genre.find_by(name: params[:genre]).id
 	book.category_id = Category.find_by(name: params[:category]).id
 	book.format_id = Format.find_by(name: params[:format]).id
 	book.loaned_to = params[:loan]
-	# binding.pry
-	# save book
 	book.save
+
 	content_type :json
 	book.to_json(:include => [:genre, :format, :category])
 end
 
+# Insert a new book
 post '/books/new' do
 	book = Book.new
 	book.title = params[:title]
@@ -97,5 +95,3 @@ end
 get '/about' do
 	erb :about
 end
-
-

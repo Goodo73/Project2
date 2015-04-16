@@ -1,50 +1,59 @@
 .container {
-	width: 83.333333%; /* 800 / 960 = 0.83333333 */
+	width: 85%;
 	margin: 0 auto;
+}
+
+header {
+	margin-bottom: 30px;
 }
 
 h1 {
 	text-align: center;
 }
 
-ul {
+nav ul {
 	text-align: center;
 }
 
-li {
+nav li {
 	display: inline;
 }
 
-.newButton, #books-list, #book-data, select {
-	width: 47.5%; /* 380 / 800 = 0.475 */
+#books-list ul {
+	list-style: none;
+	padding-left: 0;
 }
 
-.list-title {
+#books-list li {
 	cursor: pointer;
+	margin-top: 10px;
+}
+
+#books-list, #book-data {
+	width: 47.5%;
+}
+
+select {
+	width: 40%;
+}
+
+input {
+	width: 50%;
 }
 
 #books-list {
-	background-color: linen;
+	/*background-color: linen;*/
 	float: left;
 }
 
 #book-data {
-	background-color: lime;
+	/*background-color: lime;*/
 	float: right;
-	text-align: center;
+	/*text-align: center;*/
 }
 
 #book-form, #book-display {
 	display: none;
-}
-
-table {
-	border-spacing: 20px;
-	margin: 0 auto;
-}
-
-th {
-	text-align: left;
 }
 
 #filterBtn {
@@ -53,7 +62,8 @@ th {
 }
 
 #filters {
-	margin-top: 30px;
+	margin-top: 20px;
+	/*background-color: red;*/
 }
 
 #filters .bottom, #filterBtn {
@@ -68,7 +78,11 @@ th {
 	float: right;
 }
 
-h3 {
+#book-display h2, #book-display h3 {
+	text-align: center;
+}
+
+#book-display h3 {
 	font-style: italic;
 }
 
@@ -77,22 +91,28 @@ h3 {
 }
 
 .newButton {
-	float: right;
+	margin-top: 30px;
 }
 
-.newBtn {
+.newBtn { 
+	float: right;
+	padding: 10px 10px;
+}
+
+.newBtn, .saveBtn, .editBtn, .delBtn, #filterBtn { 
+	padding: 10px 10px;
+}
+
+.saveBtn, .newBtn {
 	display: block;
 	margin: 0 auto;
 }
 
+#displayButtons {
+	text-align: center;
+	/*background-color: blue;	*/
+}
 
-/* Apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
 
 /*----------------------------------*/
 /* Clearfix for floats              */

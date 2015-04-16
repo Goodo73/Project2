@@ -1,17 +1,11 @@
 <div id="main" class="cf">
 	<section id="books-list">
-		<table id="books">
-			<tr>
-				<th>Title</th>
-				<th>Author(s)</th>
-			</tr>
+		<ul>
 			<% @books.each do |book| %>
-			<tr>
-				<td class="list-title" data-book-id="<%= book.id %>"><%= book.title %></td>
-				<td><%= book.author %></td>
-			</tr>
+			<li data-book-id="<%= book.id %>"><strong><%= book.title %></strong> by <%= book.author %></li>
 			<% end %>
-		</table>
+		</ul>
+
 		<form action="" id="filters">
 			<div class="top cf">
 				<select name="filter-genre" id="filter-genre">
@@ -60,8 +54,10 @@
 			<p>
 				<strong>Loaned to:</strong> <span id="loaned_to"></span>
 			</p>
-			<button class="editBtn">Edit</button>
-			<button class="delBtn">Delete</button>
+			<p id="displayButtons">
+				<button class="editBtn">Edit</button>
+				<button class="delBtn">Delete</button>
+			</p>
 		</div>
 		<form id="book-form" action="/books/new" method="post">
 			<p>
@@ -103,9 +99,7 @@
 				<label for="loaned_to"><strong>Loaned to:</strong></label>
 				<input type="text" name="loaned_to" id="form-loaned_to">
 			</p>
-			<p>
-				<button class="saveBtn">Save</button>
-			</p>
+			<button class="saveBtn">Save</button>
 		</form>
 	</section>
 </div>
