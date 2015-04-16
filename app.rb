@@ -16,9 +16,9 @@ end
 
 get '/' do
 	@books = Book.all.order('title')
-	@genres = Genre.all
-	@formats = Format.all
-	@categories = Category.all
+	@genres = Genre.all.order('name')
+	@formats = Format.all.order('name')
+	@categories = Category.all.order('name')
 
   erb :index
 end
@@ -82,16 +82,16 @@ end
 
 post '/books/new' do
 	book = Book.new
-	book.title = # params[:title]
-	book.author = #
-	book.genre = #
-	book.format = #
-	book.category = #
-	book.loaned_to = #
+	book.title = params[:title]
+	book.author = params[:author]
+	book.genre_id = Genre.find_by(name: params[:genre]).id
+	book.category_id = Category.find_by(name: params[:category]).id
+	book.format_id = Format.find_by(name: params[:format]).id
+	book.loaned_to = params[:loan]
 	book.save
 
 	content_type :json
-	book.to_json
+	book.to_json(:include => [:genre, :format, :category])
 end
 
 get '/about' do

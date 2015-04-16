@@ -1,4 +1,3 @@
-
 <div id="main" class="cf">
 	<section id="books-list">
 		<table id="books">
@@ -75,6 +74,7 @@
 			<p>
 				<label for="form-genre"><strong>Genre:</strong></label>
 				<select name="form-genre" id="form-genre">
+					<option value="none" disabled>Choose a genre</option>
 					<% @genres.each do |genre| %>
 						<option><%= genre.name %></option>
 					<% end %>
@@ -83,6 +83,7 @@
 			<p>
 				<label for="form-category"><strong>Category:</strong></label>
 				<select name="form-category" id="form-category">
+					<option value="none" disabled>Choose a category</option>
 					<% @categories.each do |category| %>
 						<option><%= category.name %></option>
 					<% end %>
@@ -91,6 +92,7 @@
 			<p>
 				<label for="form-format"><strong>Format:</strong></label>
 				<select name="form-format" id="form-format">
+					<option value="none" disabled>Choose a format</option>
 					<% @formats.each do |format| %>
 						<option><%= format.name %></option>
 					<% end %>
@@ -109,130 +111,3 @@
 <div class="newButton">
 	<button class="newBtn">New book</button>
 </div>
-
-
-<script>
-	$(document).ready(function(){
-		$('#books').on('click', 'td.list-title', function(){
-			var $bookId = $(this).data('book-id');
-
-			var apiBook = {
-				url: '/api/books/' + $bookId,
-				dataType: 'json'
-			};
-			$.ajax(apiBook).done(function(book) {
-				displayBook(book,$bookId);
-			})
-		})
-
-		// Edit button clicked while viewing book details
-		$('.editBtn').on('click', function(){
-			var $bookId = $(this).data('book-id');
-			var apiBook = {
-				url: '/api/books/' + $bookId,
-				dataType: 'json'
-			};
-			$.ajax(apiBook).done(function(book) {
-				$('#form-title').val(book.title);
-				$('#form-author').val(book.author);
-				$('#form-genre').val(book.genre.name);
-				$('#form-category').val(book.category.name);
-				$('#form-format').val(book.format.name);
-				$('#form-loaned_to').val(book.loaned_to);
-
-				$('#book-display').hide();
-				$('#book-form').show();
-			})
-		})
-
-		$('.saveBtn').on('click', function(e){
-			e.preventDefault();
-			var $bookId = $(this).data('book-id');
-			var saveBook = {
-				url: '/books/' + $bookId,
-				method: 'put',
-				data: {
-					title: $('#form-title').val(),
-					author: $('#form-author').val(),
-					genre: $('#form-genre').val(),
-					category: $('#form-category').val(),
-					format: $('#form-format').val(),
-					loan: $('#form-loaned_to').val()
-				}
-			};
-			$.ajax(saveBook).done(function(book) {
-				displayBook(book,$bookId);
-
-				// Load book list
-				var apiBooks = {
-					url: '/api/books',
-					dataType: 'json'
-				};
-				$.ajax(apiBooks).done(function(books) {
-					loadBooks(books)
-				})
-			})
-		})
-
-		// Delete button clicked while viewing book details
-		$('.delBtn').on('click', function(){
-			var $bookId = $(this).data('book-id');
-
-			var deleteBook = {
-				url: '/books/' + $bookId + '/delete',
-				method: 'delete',
-			};
-			$.ajax(deleteBook).done(function(book) {
-				$('#book-form').hide();
-				$('#book-display').hide();
-
-				// Load book list
-				var apiBooks = {
-					url: '/api/books',
-					dataType: 'json'
-				};
-				$.ajax(apiBooks).done(function(books) {
-					loadBooks(books)
-				})
-			})
-		})
-
-		function displayBook(book,bookID) {
-			$('#book-display h2').html(book.title);
-			$('#book-display h3').html(book.author);
-			$('#book-display #genre').html(book.genre.name);
-			$('#book-display #category').html(book.category.name);
-			$('#book-display #format').html(book.format.name);
-			$('#book-display #loaned_to').html(book.loaned_to);
-			$('.editBtn').data('book-id', bookID);
-			$('.delBtn').data('book-id', bookID);
-			$('.saveBtn').data('book-id', bookID);
-
-			$('#book-form').hide();
-			$('#book-display').show();
-		}
-
-		function loadBooks(books) {
-			$('#books').empty();
-			
-			var $tableRow = $('<tr>');
-			var $tableHeadingTitle = $('<th>').html("Title");
-			var $tableHeadingAuthor = $('<th>').html("Author(s)");
-			$tableRow.append($tableHeadingTitle).append($tableHeadingAuthor);
-
-			$('#books').append($tableRow);
-
-			for (var i = 0; i < books.length; i++) {
-				$tableRow = $('<tr>');
-				var $tableDataTitle = $('<td>').html(books[i].title);
-				$tableDataTitle.attr('class', 'title');
-				$tableDataTitle.attr('data-book-id', books[i].id);
-				var $tableDataAuthor = $('<td>').html(books[i].author);
-				$tableRow.append($tableDataTitle).append($tableDataAuthor);
-
-				$('#books').append($tableRow);
-			}
-		}
-
-	});
-</script>
