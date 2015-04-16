@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	// Book title clicked in book listing
 	$('#books').on('click', 'td.list-title', function(){
 		var $bookId = $(this).data('book-id');
 
@@ -25,30 +26,6 @@ $(document).ready(function(){
 
 		// Set Save button's book-id to 0 to flag we are saving a new entry
 		$('.saveBtn').data('book-id','0');
-	// 	var newBook = {
-	// 		url: '/books/new',
-	// 		method: 'post',
-	// 		data: {
-	// 			title: $('#form-title').val(),
-	// 			author: $('#form-author').val(),
-	// 			genre: $('#form-genre').val(),
-	// 			category: $('#form-category').val(),
-	// 			format: $('#form-format').val(),
-	// 			loan: $('#form-loaned_to').val()
-	// 		}
-	// 	};
-	// 	$.ajax(newBook).done(function(book) {
-	// 		displayBook(book,book.id);
-
-	// 		// Load book list
-	// 		var apiBooks = {
-	// 			url: '/api/books',
-	// 			dataType: 'json'
-	// 		};
-	// 		$.ajax(apiBooks).done(function(books) {
-	// 			loadBooks(books)
-	// 		})
-	// 	})
 	})
 
 	// Save button clicked while editing book details
@@ -87,7 +64,7 @@ $(document).ready(function(){
 				dataType: 'json'
 			};
 			$.ajax(apiBooks).done(function(books) {
-				loadBooks(books)
+				displayBooks(books)
 			})
 		})
 	})
@@ -130,11 +107,12 @@ $(document).ready(function(){
 				dataType: 'json'
 			};
 			$.ajax(apiBooks).done(function(books) {
-				loadBooks(books)
+				displayBooks(books)
 			})
 		})
 	})
 
+	// Display the details of a single book
 	function displayBook(book,bookID) {
 		$('#book-display h2').html(book.title);
 		$('#book-display h3').html(book.author);
@@ -142,6 +120,8 @@ $(document).ready(function(){
 		$('#book-display #category').html(book.category.name);
 		$('#book-display #format').html(book.format.name);
 		$('#book-display #loaned_to').html(book.loaned_to);
+
+		// Save the id of the selected book to buttons (for future referencing)
 		$('.editBtn').data('book-id', bookID);
 		$('.delBtn').data('book-id', bookID);
 		$('.saveBtn').data('book-id', bookID);
@@ -150,7 +130,8 @@ $(document).ready(function(){
 		$('#book-display').show();
 	}
 
-	function loadBooks(books) {
+	// Display a list of books 
+	function displayBooks(books) {
 		$('#books').empty();
 		
 		var $tableRow = $('<tr>');
