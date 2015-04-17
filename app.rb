@@ -2,11 +2,19 @@ require 'sinatra'
 # require 'sinatra/reloader'
 # require 'pry'
 
-require_relative 'config'
 require_relative 'book'
 require_relative 'genre'
 require_relative 'format'
 require_relative 'category'
+
+require 'active_record'
+
+local_db = {
+	:adapter => 'postgresql',
+	:database => 'project_2'
+}
+
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || local_db)
 
 after do
   ActiveRecord::Base.connection.close
