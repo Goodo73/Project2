@@ -16,13 +16,13 @@
 				<select name="filter-genre" id="filter-genre">
 					<option value="none" disabled selected>Choose a genre</option>
 					<% @genres.each do |genre| %>
-						<option value=""><%= genre.name %></option>
+						<option value="<%= genre.id %>"><%= genre.name %></option>
 					<% end %>
 				</select>
 				<select name="filter-category" id="filter-category">
 					<option value="none" disabled selected>Choose a category</option>
 					<% @categories.each do |category| %>
-						<option value=""><%= category.name %></option>
+						<option value="<%= category.id %>"><%= category.name %></option>
 					<% end %>
 				</select>
 			</div>
@@ -30,7 +30,7 @@
 				<select name="filter-format" id="filter-format">
 					<option value="none" disabled selected>Choose a format</option>
 					<% @formats.each do |format| %>
-						<option value=""><%= format.name %></option>
+						<option value="<%= format.id %>"><%= format.name %></option>
 					<% end %>
 				</select>
 				<select name="filter-loan" id="filter-loan">

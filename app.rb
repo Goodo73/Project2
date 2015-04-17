@@ -1,6 +1,6 @@
 require 'sinatra'
-require 'sinatra/reloader'
-require 'pry'
+# require 'sinatra/reloader'
+# require 'pry'
 
 require_relative 'config'
 require_relative 'book'
@@ -24,6 +24,13 @@ end
 # Retrieve all books, ordered by title
 get '/api/books' do
 	books = Book.all.order('title')
+	content_type :json
+	books.to_json(:include => [:genre, :format, :category])
+end
+
+# Retrieve books, filtered by criteria, ordered by title
+get '/api/books/filter' do
+	books = Book.where(genre_id: params[:genre]).order('title')
 	content_type :json
 	books.to_json(:include => [:genre, :format, :category])
 end

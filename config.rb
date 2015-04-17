@@ -1,8 +1,8 @@
 require 'active_record'
 
-activeRecordOptions = {
+local_db = {
 	:adapter => 'postgresql',
 	:database => 'project_2'
 }
 
-ActiveRecord::Base.establish_connection(activeRecordOptions)
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || local_db)

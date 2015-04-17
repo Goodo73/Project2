@@ -12,6 +12,45 @@ $(document).ready(function(){
 		})
 	})
 
+	// Filter button clicked
+	$('#filterBtn').on('click', function(){
+		if ($('#filter-genre').val() === null) {
+			var filtGenre = '';
+		} else {
+			var filtGenre = $('#filter-genre').val();
+		}
+
+		if ($('#filter-category').val() === null) {
+			var filtCategory = '';
+		} else {
+			var filtCategory = $('#filter-category').val();
+		}
+
+		if ($('#filter-format').val() === null) {
+			var filtFormat = '';
+		} else {
+			var filtFormat = $('#filter-format').val();
+		}
+		var apiBook = {
+			url: '/api/books/filter',
+			dataType: 'json',
+			data: {
+				genre: filtGenre,
+				category: filtCategory,
+				format: filtFormat
+				// loan: $('#filter-loan').val()
+				// 'none', '0' (not loaned) or '1' (loaned)
+			}
+		};
+		$.ajax(apiBook).done(function(books) {
+			debugger;
+			displayBooks(books);
+
+			$('#book-display').hide();
+			$('#book-form').hide();
+		})
+	})
+
 	// New button clicked while editing book details
 	$('.addBtn').on('click',function(){
 		// Clear input fields
@@ -132,6 +171,7 @@ $(document).ready(function(){
 
 	// Display a list of books 
 	function displayBooks(books) {
+		debugger;
 		$('#books-list ul').empty();
 		
 		for (var i = 0; i < books.length; i++) {
