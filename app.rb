@@ -2,12 +2,13 @@ require 'sinatra'
 # require 'sinatra/reloader'
 # require 'pry'
 
+require 'active_record'
+
 require_relative 'book'
 require_relative 'genre'
 require_relative 'format'
 require_relative 'category'
 
-require 'active_record'
 
 local_db = {
 	:adapter => 'postgresql',
