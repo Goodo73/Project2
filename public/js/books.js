@@ -43,7 +43,6 @@ $(document).ready(function(){
 			}
 		};
 		$.ajax(apiBook).done(function(books) {
-			debugger;
 			displayBooks(books);
 
 			$('#book-display').hide();
@@ -171,7 +170,6 @@ $(document).ready(function(){
 
 	// Display a list of books 
 	function displayBooks(books) {
-		debugger;
 		$('#books-list ul').empty();
 		
 		for (var i = 0; i < books.length; i++) {
