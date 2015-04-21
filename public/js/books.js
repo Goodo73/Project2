@@ -13,18 +13,48 @@ $(document).ready(function(){
 	})
 
 	// Filter button clicked
-	$('#filterBtn').on('click', function(event){
-		if (
-			($('#filter-genre').val() === null) &&
-			($('#filter-category').val() === null) &&
-			($('#filter-format').val() === null) &&
-			($('#filter-loan').val() === null)
-			) {
-				event.preventDefault();
-			// No filtering criteria has been set, so do nothing
-		} else {
-			filterBookList();
+	$('#filters').on('submit', function(event){
+		event.preventDefault();
+
+		// Set the filtering criteria and make an AJAX call
+		apiUrl = '/api/books/filter';
+
+		var params = [];
+		
+		if ($('#filter-genre').val() !== null) {
+			var temp = "genre=" + $('#filter-genre').val();
+			params.push(temp);
 		}
+
+		if ($('#filter-category').val() !== null) {
+			var temp = "category=" + $('#filter-category').val();
+			params.push(temp);
+		}
+
+		if ($('#filter-format').val() !== null) {
+			var temp = "format=" + $('#filter-format').val();
+			params.push(temp);
+		}
+
+		if ($('#filter-loan').val() !== null) {
+			var temp = "loan=" + $('#filter-loan').val();
+			params.push(temp);
+		}
+
+		if (params.length > 0) {
+			apiUrl = apiUrl + '?';
+			apiUrl = apiUrl + params.join('&');			
+		}
+		var apiBook = {
+			url: apiUrl,
+			dataType: 'json'
+		};
+		$.ajax(apiBook).done(function(books) {
+			displayBooks(books);
+
+			$('#book-display').hide();
+			$('#book-form').hide();
+		})
 	})
 
 	// New button clicked while editing book details
@@ -126,49 +156,6 @@ $(document).ready(function(){
 			})
 		})
 	})
-
-	// Set the filtering criteria and make an AJAX call
-	function filterBookList() {
-		if ($('#filter-genre').val() === null) {
-			var filtGenre = '';
-		} else {
-			var filtGenre = $('#filter-genre').val();
-		}
-
-		if ($('#filter-category').val() === null) {
-			var filtCategory = '';
-		} else {
-			var filtCategory = $('#filter-category').val();
-		}
-
-		if ($('#filter-format').val() === null) {
-			var filtFormat = '';
-		} else {
-			var filtFormat = $('#filter-format').val();
-		}
-
-		if ($('#filter-loan').val() === null) {
-			var filtLoan = '';
-		} else {
-			var filtLoan = $('#filter-loan').val();
-		}
-		var apiBook = {
-			url: '/api/books/filter',
-			dataType: 'json',
-			data: {
-				genre: filtGenre,
-				category: filtCategory,
-				format: filtFormat,
-				loan: filtLoan
-			}
-		};
-		$.ajax(apiBook).done(function(books) {
-			displayBooks(books);
-
-			$('#book-display').hide();
-			$('#book-form').hide();
-		})
-	}
 
 	// Display the details of a single book
 	function displayBook(book,bookID) {

@@ -2,8 +2,8 @@ require 'sinatra'
 
 require 'pg'
 require 'active_record'
-
 # require 'sinatra/reloader'
+
 require 'pry'
 
 require_relative 'book'
@@ -42,16 +42,24 @@ end
 # Retrieve books, filtered by criteria, ordered by title
 get '/api/books/filter' do
 	books = Book.all.order('title')
-	books = books.where(genre_id: params[:genre]) if !params[:genre].empty?
-	books = books.where(category_id: params[:category]) if !params[:category].empty?
-	books = books.where(format_id: params[:format]) if !params[:format].empty?
-	
-	if params[:loan] == '1'
-		books = books.loaned
-	elsif params[:loan] == '0'
-		books = books.unloaned
+
+	if params[:genre] && !params[:genre].empty?
+		books = books.where(genre_id: params[:genre])
 	end
 
+	if params[:category] && !params[:category].empty?
+		books = books.where(category_id: params[:category])
+	end
+
+	if params[:format] && !params[:format].empty?
+		books = books.where(format_id: params[:format])
+	end
+	
+	if params[:loan] && params[:loan] == '1'
+		books = books.loaned
+	elsif params[:loan] && params[:loan] == '0'
+		books = books.unloaned
+	end
 	content_type :json
 	books.to_json(:include => [:genre, :format, :category])
 end
