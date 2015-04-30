@@ -4,8 +4,6 @@ require 'pg'
 require 'active_record'
 # require 'sinatra/reloader'
 
-require 'pry'
-
 require_relative 'book'
 require_relative 'genre'
 require_relative 'format'
