@@ -14,13 +14,13 @@
 		<form action="" id="filters">
 			<div class="top cf">
 				<select name="filter-genre" id="filter-genre">
-					<option value="none" disabled selected>Choose a genre</option>
+					<option value="none" disabled selected>Genre</option>
 					<% @genres.each do |genre| %>
 						<option value="<%= genre.id %>"><%= genre.name %></option>
 					<% end %>
 				</select>
 				<select name="filter-category" id="filter-category">
-					<option value="none" disabled selected>Choose a category</option>
+					<option value="none" disabled selected>Category</option>
 					<% @categories.each do |category| %>
 						<option value="<%= category.id %>"><%= category.name %></option>
 					<% end %>
@@ -28,15 +28,15 @@
 			</div>
 			<div class="bottom cf">
 				<select name="filter-format" id="filter-format">
-					<option value="none" disabled selected>Choose a format</option>
+					<option value="none" disabled selected>Format</option>
 					<% @formats.each do |format| %>
 						<option value="<%= format.id %>"><%= format.name %></option>
 					<% end %>
 				</select>
 				<select name="filter-loan" id="filter-loan">
-					<option value="none" disabled selected>Choose a loan status</option>
-					<option value="1">Loaned</option>
-					<option value="0">Not loaned</option>
+					<option value="none" disabled selected>Loaned?</option>
+					<option value="1">Yes</option>
+					<option value="0">No</option>
 				</select>
 			</div>
 			<button id="filterBtn">Filter</button>

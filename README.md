@@ -5,11 +5,13 @@
 Heroku-hosted [app](https://wdiproject2.herokuapp.com/).
 
 ## Version history
-1.0 - Friday April 17, 2015.
+1.0 - April 17, 2015 - End of project week
+1.1 - April 21, 2015 - Book list filtering functionality added
 
 ## Incomplete content
-- Filtering of the book list
+- Filtering of the book list. [rectified in v1.1]
 - Validation of genre, category & format (ie. one in each must be selected) when creating a new book.
+- Ability to clear the filters back to their default values.
 
 ## User Stories
 - I want to list all the books that I own, no matter the format
