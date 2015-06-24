@@ -1,128 +1,128 @@
 body {
-	background-color: black;
-	font-family: 'Glegoo', serif;
-	background-image: url('/images/library.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	color: white;
+  background-color: black;
+  font-family: 'Glegoo', serif;
+  background-image: url('/images/library.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
 }
 
 .container {
-	width: 85%;
-	margin: 0 auto;
+  width: 85%;
+  margin: 0 auto;
 }
 
 h1 {
-	text-align: center;
-	font-size: 3em;
-	margin: .35em 0;
+  text-align: center;
+  font-size: 3em;
+  margin: .35em 0;
 }
 
 nav ul {
-	text-align: center;
+  text-align: center;
 }
 
 nav li {
-	display: inline;
-	padding-right: 10px;
+  display: inline;
+  padding-right: 10px;
 }
 
 nav li:last-child {
-	padding-right: 0;
+  padding-right: 0;
 }
 
 #books-list, #book-data {
-	width: 47.5%;
+  width: 47.5%;
 }
 
 #books-list ul {
-	list-style: none;
-	padding-left: 0;
-	height: 300px;
-	overflow: scroll;
+  list-style: none;
+  padding-left: 0;
+  height: 300px;
+  overflow: scroll;
 }
 
 #books-list li {
-	cursor: pointer;
-	margin-top: 10px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 a {
-	text-decoration: none;
-	color: white;
+  text-decoration: none;
+  color: white;
 }
 
 a:hover {
-	color: yellow;
+  color: yellow;
 }
 
 select {
-	width: 40%;
-	background-color: black;
+  width: 40%;
+  background-color: black;
 }
 
 input {
-	width: 50%;
-	color: black;
+  width: 50%;
+  color: black;
 }
 
 #books-list {
-	float: left;
+  float: left;
 }
 
 #book-data {
-	float: right;
+  float: right;
 }
 
 #book-form, #book-display {
-	display: none;
+  display: none;
 }
 
 #filterBtn {
-	display: block;
-	margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 
 #filters {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 #filters .bottom, #filterBtn {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 #filter-genre, #filter-format {
-	float: left;
+  float: left;
 }
 
 #filter-category, #filter-loan {
-	float: right;
+  float: right;
 }
 
 #book-display h2, #book-display h3 {
-	text-align: center;
+  text-align: center;
 }
 
 #book-display h3 {
-	font-style: italic;
+  font-style: italic;
 }
 
 button { 
-	padding: 5px 10px;
-	background-color: black;
+  padding: 5px 10px;
+  background-color: black;
 }
 
 button:hover {
-	background-color: #84B0D2;
+  background-color: #84B0D2;
 }
 
 .saveBtn {
-	display: block;
-	margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 
 #displayButtons {
-	text-align: center;
+  text-align: center;
 }
 
 
